@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from rest_framework import generics, permissions
 from posts.permissions import IsAuthorOrAdminOrPostOwner
 from .models import Comment
@@ -16,6 +17,7 @@ class CommentDetailView(generics.RetrieveDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializers
 
+    @cache_page(60 * 15)
     def get_permissions(self):
         if self.request.method == 'GET':
             return [IsAuthorOrAdminOrPostOwner(), ]

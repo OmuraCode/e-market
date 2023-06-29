@@ -10,6 +10,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from account import serializers
 from account.send_mail import send_confirmation_email
 from like.serializers import FavoriteSerializers
+from django.views.decorators.cache import cache_page
 
 # from account.send_mail import
 
@@ -22,6 +23,7 @@ class UserViewSet(ListModelMixin, GenericViewSet):
     serializer_class = serializers.UserSerializer
     permission_classes = (AllowAny,)
 
+    @cache_page(60 * 15)
     @action(['POST'], detail=False)
     def register(self, request, *args, **kwargs):
         serializer = serializers.RegisterSerializer(data=request.data)
@@ -37,6 +39,7 @@ class UserViewSet(ListModelMixin, GenericViewSet):
 
             return Response(serializer.data, status=201)
 
+    @cache_page(60 * 15)
     @action(['GET'], detail=False, url_path='activate/(?P<uuid>[0-9A-Fa-f-]+)')
     def activate(self, request, uuid):
         try:
@@ -49,6 +52,7 @@ class UserViewSet(ListModelMixin, GenericViewSet):
         user.save()
         return Response({'msg': 'Successfully activated'}, status=200)
 
+    @cache_page(60 * 15)
     @action(['GET'], detail=True)
     def favorites(self, request, pk):
         user = self.get_object()

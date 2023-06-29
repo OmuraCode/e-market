@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
@@ -23,7 +24,7 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     pagination_class = StandartResultPagination
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    filterset_fields = ('owner', 'category', )
+    filterset_fields = ('owner', 'category',)
     search_fields = ('title', 'body')
 
     def perform_create(self, serializer):
@@ -43,6 +44,7 @@ class PostViewSet(ModelViewSet):
             return [IsAuthor(), ]
         return [permissions.IsAuthenticatedOrReadOnly(), ]
 
+    @cache_page(60 * 15)
     @action(['GET'], detail=True)
     def comments(self, request, pk):
         post = self.get_object()
@@ -50,6 +52,7 @@ class PostViewSet(ModelViewSet):
         serializer = CommentSerializers(instance=comments, many=True)
         return Response(serializer.data, status=200)
 
+    @cache_page(60 * 15)
     @action(['GET'], detail=True)
     def likes(self, request, pk):
         post = self.get_object()
@@ -57,6 +60,7 @@ class PostViewSet(ModelViewSet):
         serializer = LikeUserSerializer(instance=likes, many=True)
         return Response(serializer.data, status=200)
 
+    @cache_page(60 * 15)
     @action(['POST', 'DELETE'], detail=True)
     def favorites(self, request, pk):
         post = self.get_object()
