@@ -9,6 +9,7 @@ class CategoryListSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+
 class CategorySerializer(serializers.ModelSerializer):
     parent_name = serializers.ReadOnlyField(source='parent.name')
 
@@ -23,3 +24,4 @@ class CategorySerializer(serializers.ModelSerializer):
             repr['children'] = CategoryListSerializer(children, many=True).data
 
         return repr
+

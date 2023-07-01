@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from comment.serializers import CommentSerializers
 from like.models import Favorite
-from like.serializers import LikeUserSerializer
+from like.serializers import LikeSerializer
 from .models import Post
 from . import serializers
 from .permissions import IsAuthor, IsAuthorOrAdmin
@@ -23,7 +23,7 @@ class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     pagination_class = StandartResultPagination
     filter_backends = (DjangoFilterBackend, SearchFilter)
-    filterset_fields = ('owner', 'category', )
+    filterset_fields = ('owner', 'category',)
     search_fields = ('title', 'body')
 
     def perform_create(self, serializer):
@@ -43,21 +43,21 @@ class PostViewSet(ModelViewSet):
             return [IsAuthor(), ]
         return [permissions.IsAuthenticatedOrReadOnly(), ]
 
-    @action(['GET'], detail=True)
+    @action(methods=['GET'], detail=True)
     def comments(self, request, pk):
         post = self.get_object()
         comments = post.comments.all()
         serializer = CommentSerializers(instance=comments, many=True)
         return Response(serializer.data, status=200)
 
-    @action(['GET'], detail=True)
+    @action(methods=['GET'], detail=True)
     def likes(self, request, pk):
         post = self.get_object()
         likes = post.likes.all()
-        serializer = LikeUserSerializer(instance=likes, many=True)
+        serializer = LikeSerializer(instance=likes, many=True)
         return Response(serializer.data, status=200)
 
-    @action(['POST', 'DELETE'], detail=True)
+    @action(methods=['POST', 'DELETE'], detail=True)
     def favorites(self, request, pk):
         post = self.get_object()
         user = request.user

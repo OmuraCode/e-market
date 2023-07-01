@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from rest_framework import generics, permissions
 from posts.permissions import IsAuthorOrAdminOrPostOwner
 from .models import Comment

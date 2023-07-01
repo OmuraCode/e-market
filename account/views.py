@@ -11,7 +11,9 @@ from account import serializers
 from account.send_mail import send_confirmation_email
 from like.serializers import FavoriteSerializers
 
-# from account.send_mail import
+
+from order.serializers import OrderUserSerializer
+
 
 
 User = get_user_model()
@@ -54,6 +56,13 @@ class UserViewSet(ListModelMixin, GenericViewSet):
         user = self.get_object()
         fav_posts = user.favorites.all()
         serializer = FavoriteSerializers(fav_posts, many=True)
+        return Response(serializer.data, status=201)
+
+    @action(['GET'], detail=True)
+    def orders(self, request, pk):
+        user = self.get_object()
+        orders = user.orders.all()
+        serializer = OrderUserSerializer(orders, many=True)
         return Response(serializer.data, status=201)
 
 

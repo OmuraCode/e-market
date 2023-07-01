@@ -1,6 +1,9 @@
+from django.db.models import Sum
 from rest_framework import serializers
 
 from category.models import Category
+from order.serializers import OrderUserSerializer
+from rating.serializers import MarkSerializer
 from .models import Post, PostImages
 from comment.serializers import CommentSerializers
 
@@ -29,6 +32,7 @@ class PostListSerializer(serializers.ModelSerializer):
         if user.is_authenticated:
             repr['is_liked'] = user.likes.filter(post=instance).exists()
             repr['is_favorite'] = user.favorites.filter(post=instance).exists()
+            repr['is_ordered'] = user.orders.filter(post=instance).exists()
 
         return repr
 
@@ -66,8 +70,16 @@ class PostDetailSerializer(serializers.ModelSerializer):
         repr['comments_count'] = instance.comments.count()
         repr['comments'] = CommentSerializers(instance.comments.all(), many=True).data
         repr['like_count'] = instance.likes.count()
+        repr['order_count'] = instance.orders.count()
+        repr['marks'] = MarkSerializer(instance.marks.all(), many=True).data
+        repr['marks_count'] = instance.marks.count()
+        marks_count = instance.marks.count()
+        total_marks = instance.marks.aggregate(total=Sum('mark'))['total']
+        repr['rating'] = total_marks / marks_count
+        repr['orders_count'] = instance.orders.count()
         user = self.context['request'].user
         if user.is_authenticated:
             repr['is_liked'] = user.likes.filter(post=instance).exists()
             repr['is_favorite'] = user.favorites.filter(post=instance).exists()
+            repr['is_ordered'] = user.orders.filter(post=instance).exists()
         return repr

@@ -10,6 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os.path
+
+
+
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
@@ -49,6 +53,7 @@ INSTALLED_APPS = [
     'posts',
     'rating',
     'telegram_bot',
+
     # inst apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -220,8 +225,29 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
 }
 
+# DOCUMENTATION
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Token': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+      },
+   },
+    'USE_SESSION_AUTH': False,
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": BASE_DIR / 'django_cache',
+    }
+}
+
+
 # Celery Configuration Options
 CELERY_TIMEZONE = "Australia/Tasmania"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
 
