@@ -20,18 +20,38 @@ from django.urls import path
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
+from django.urls import path, include, re_path
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 urlpatterns = [
+
+
+
     path('admin/', admin.site.urls),
     path('api/v1/accounts/', include('account.urls')),
     path('api/v1/category/', include('category.urls')),
     path('api/v1/posts/', include('posts.urls')),
     path('api/v1/comments/', include('comment.urls')),
     path('api/v1/likes/', include('like.urls')),
+
     path('api/v1/rating', include('rating.urls')),
-
-
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
