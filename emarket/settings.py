@@ -9,7 +9,11 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
+
 import os.path
+
+
+
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
@@ -48,6 +52,7 @@ INSTALLED_APPS = [
     'like',
     'posts',
     'rating',
+    'telegram_bot',
 
     # inst apps
     'rest_framework',
@@ -68,24 +73,24 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "information.log",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
 
 ROOT_URLCONF = 'emarket.urls'
 
@@ -202,7 +207,7 @@ SIMPLE_JWT = {
     "JWK_URL": None,
     "LEEWAY": 0,
 
-    "AUTH_HEADER_TYPES": ("Bearer",'Token', 'JWT'),
+    "AUTH_HEADER_TYPES": ("Bearer", 'Token', 'JWT'),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
@@ -219,12 +224,6 @@ SIMPLE_JWT = {
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
 }
-
-
-
-
-
-
 
 # DOCUMENTATION
 SWAGGER_SETTINGS = {
@@ -244,5 +243,11 @@ CACHES = {
         "LOCATION": BASE_DIR / 'django_cache',
     }
 }
+
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Australia/Tasmania"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
