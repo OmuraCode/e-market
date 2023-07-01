@@ -70,13 +70,13 @@ class PostDetailSerializer(serializers.ModelSerializer):
         repr['comments_count'] = instance.comments.count()
         repr['comments'] = CommentSerializers(instance.comments.all(), many=True).data
         repr['like_count'] = instance.likes.count()
-        repr['orders'] = OrderUserSerializer(instance.orders.all(), many=True).data
         repr['order_count'] = instance.orders.count()
         repr['marks'] = MarkSerializer(instance.marks.all(), many=True).data
         repr['marks_count'] = instance.marks.count()
         marks_count = instance.marks.count()
         total_marks = instance.marks.aggregate(total=Sum('mark'))['total']
         repr['rating'] = total_marks / marks_count
+        repr['orders_count'] = instance.orders.count()
         user = self.context['request'].user
         if user.is_authenticated:
             repr['is_liked'] = user.likes.filter(post=instance).exists()

@@ -1,4 +1,3 @@
-from django.views.decorators.cache import cache_page
 from rest_framework import permissions
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
@@ -6,7 +5,7 @@ from rest_framework.response import Response
 
 from comment.serializers import CommentSerializers
 from like.models import Favorite
-from like.serializers import LikeUserSerializer
+from like.serializers import LikeSerializer
 from .models import Post
 from . import serializers
 from .permissions import IsAuthor, IsAuthorOrAdmin
@@ -44,24 +43,21 @@ class PostViewSet(ModelViewSet):
             return [IsAuthor(), ]
         return [permissions.IsAuthenticatedOrReadOnly(), ]
 
-    @cache_page(60 * 15)
-    @action(['GET'], detail=True)
+    @action(methods=['GET'], detail=True)
     def comments(self, request, pk):
         post = self.get_object()
         comments = post.comments.all()
         serializer = CommentSerializers(instance=comments, many=True)
         return Response(serializer.data, status=200)
 
-    @cache_page(60 * 15)
-    @action(['GET'], detail=True)
+    @action(methods=['GET'], detail=True)
     def likes(self, request, pk):
         post = self.get_object()
         likes = post.likes.all()
-        serializer = LikeUserSerializer(instance=likes, many=True)
+        serializer = LikeSerializer(instance=likes, many=True)
         return Response(serializer.data, status=200)
 
-    @cache_page(60 * 15)
-    @action(['POST', 'DELETE'], detail=True)
+    @action(methods=['POST', 'DELETE'], detail=True)
     def favorites(self, request, pk):
         post = self.get_object()
         user = request.user

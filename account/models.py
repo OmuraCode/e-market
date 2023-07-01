@@ -1,6 +1,7 @@
 from uuid import uuid4
 
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import RegexValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -15,6 +16,16 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
+    tel_number = models.CharField(
+        max_length=20, default='',
+        validators=[
+            RegexValidator(
+                regex=r'^\+?[0-9]+$',
+                message='Please enter a valid phone number.',
+                code='invalid_phone_number'
+            )
+        ]
+    )
     avatar = models.ImageField(upload_to='avatars', blank=True,
                                default='avatars/default_avatar.jpg')
     is_active = models.BooleanField(

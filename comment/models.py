@@ -9,6 +9,6 @@ class Comment(models.Model):
     body = models.TextField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return f'{self.owner} -> {self.post}'
 

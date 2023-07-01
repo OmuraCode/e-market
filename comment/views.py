@@ -17,7 +17,6 @@ class CommentDetailView(generics.RetrieveDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializers
 
-    @cache_page(60 * 15)
     def get_permissions(self):
         if self.request.method == 'GET':
             return [IsAuthorOrAdminOrPostOwner(), ]
