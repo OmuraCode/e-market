@@ -1,8 +1,5 @@
-# from uuid import uuid4
-
 from django.db import models
 
-# from account.managers import UserManager
 from posts.models import Post
 
 

@@ -10,9 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os.path
+from datetime import timedelta
 from pathlib import Path
 from decouple import config
-from datetime import timedelta
 from django.conf.global_settings import EMAIL_USE_TLS, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'like',
     'posts',
     'rating',
+
     # inst apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -66,6 +67,25 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ROOT_URLCONF = 'emarket.urls'
 
@@ -199,6 +219,12 @@ SIMPLE_JWT = {
     "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
 }
+
+
+
+
+
+
 
 # DOCUMENTATION
 SWAGGER_SETTINGS = {
