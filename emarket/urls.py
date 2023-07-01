@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/v1/posts/', include('posts.urls')),
     path('api/v1/comments/', include('comment.urls')),
     path('api/v1/likes/', include('like.urls')),
+    path('api/v1/rating', include('rating.urls')),
 
 
 ]
