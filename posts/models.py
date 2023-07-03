@@ -7,6 +7,7 @@ from random import randint
 class Post(models.Model):
     title = models.CharField(max_length=255)
     body = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     owner = models.ForeignKey('account.CustomUser', related_name='posts', on_delete=models.CASCADE)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.SET_NULL, null=True)
     preview = models.ImageField(upload_to='images/', null=True)

@@ -19,7 +19,4 @@ class MarkSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('You already marked this post')
         return attrs
 
-    # def to_representation(self, instance):
-    #     repr = super().to_representation(instance)
-    #     repr['marks_count']
 

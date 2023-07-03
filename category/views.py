@@ -3,7 +3,6 @@ from . import serializers
 from .models import Category
 
 
-
 class CategoryCreateListView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = serializers.CategorySerializer
