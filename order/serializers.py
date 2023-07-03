@@ -11,4 +11,8 @@ class OrderUserSerializer(serializers.ModelSerializer):
         model = Order
         fields = '__all__'
 
+    # def to_representation(self, instance):
+    #     repr = super().to_representation(instance)
+    #     repr['total_sum'] =
+
 
