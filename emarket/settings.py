@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'like',
     'posts',
     'rating',
-    'telegram_bot',
 
     # inst apps
     'rest_framework',

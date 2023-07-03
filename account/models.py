@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(_("first name"), max_length=150)
     last_name = models.CharField(_("last name"), max_length=150)
+    reset_password_token = models.CharField(max_length=255, blank=True)
     tel_number = models.CharField(
         max_length=20, default='',
         validators=[
